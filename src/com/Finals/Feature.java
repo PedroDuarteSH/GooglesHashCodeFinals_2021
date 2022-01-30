@@ -41,6 +41,10 @@ public class Feature implements Comparable<Feature>{
         return 0 == servicesToImplement.size();
     }
 
+    public ArrayList<Service> getServices(){
+        return servicesToImplement;
+    }
+
     @Override
     public int compareTo(Feature other) {
         if(this.usersBenefit > other.usersBenefit){

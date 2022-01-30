@@ -14,9 +14,8 @@ Output:
 
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
+
 /*
 
  */
@@ -128,23 +127,79 @@ public class Main {
 
         int daysCount = 1;
         while (true){
-
+            int toGet = 0;
+            Feature prioritary = features.get(toGet);
             //Calculate what each engineer can do
             for (Engineers e: engineers) {
-                int max_pontuation;
-                //Implement -> Calculate time for each binary in order to get important features first
-                for (Binarie bin:binaries) {
-
-                    System.out.println(bin);
-                }
+                int maxPontuation;
+                int tTImplem =  timeToImplement(prioritary);
+                System.out.println(tTImplem);
             }
 
 
             if(features.size() == 0){
                 break;
             }
+
             daysCount++;
+            break;
         }
 
     }
+
+
+    private HashMap<Binarie, Integer> serviceInBinaryCount(Feature feature){
+        HashMap<Binarie, Integer> best = new HashMap<>();
+        for (Service s:feature.getServices()) {
+            if(s.getWorkedOn() == 0){
+                if(best.containsKey(s.getBinarie())) {
+                    best.replace(s.getBinarie(), best.get(s.getBinarie()) + 1);
+                }
+                else{
+                    best.put(s.getBinarie(), 1);
+                }
+            }
+        }
+
+        return best;
+    }
+
+
+    private int timeToImplement(Feature feature){
+        //Time to implement that
+        HashMap<Binarie, Integer> best =  serviceInBinaryCount(feature);
+        Binarie toWork = null;
+        int binarieCount = 0;
+        for (Binarie b : best.keySet() ) {
+            if(best.get(b) > binarieCount){
+                toWork = b;
+            }
+        }
+
+        //People Working on binarie
+
+        assert toWork != null;
+        return feature.getDifficulty() + toWork.getServices().size();
+    }
+
+    private int workingOn(Feature feature){
+        //Time to implement that
+        HashMap<Binarie, Integer> best =  serviceInBinaryCount(feature);
+        Binarie toWork = null;
+        int binarieCount = 0;
+        for (Binarie b : best.keySet() ) {
+            if(best.get(b) > binarieCount){
+                toWork = b;
+            }
+        }
+
+        //People Working on binarie
+
+        assert toWork != null;
+        return feature.getDifficulty() + toWork.getServices().size();
+    }
+
 }
+
+
+
